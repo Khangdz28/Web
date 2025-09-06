@@ -51,17 +51,17 @@
       width: 0%;
       background: #38bdf8;
       border-radius: 10px;
-      transition: width 5s linear;
+      transition: width 0.3s linear; /* chạy nhanh trong 0.3 giây */
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <h2>🔑 Unlock Script</h2>
+    <h2>👇Mở Khoá Script👇</h2>
     <p>Hoàn thành nhiệm vụ để mở khóa script</p>
 
     <button class="btn-follow" onclick="openTask(1, this)">📌 Follow TikTok</button>
-    <button class="btn-like" onclick="openTask(2, this)">❤️ Tim Video</button>
+    <button class="btn-like" onclick="openTask(2, this)">Đăng kí Youtube</button>
     <button class="btn-unlock" id="unlockBtn" onclick="unlockScript()">✅ Unlock Script</button>
 
     <div class="progress-container">
@@ -77,7 +77,7 @@
       if (taskId === 1) {
         url = "https://www.tiktok.com/@khng.script?_t=ZS-8zPxoCexzvU&_r=1";
       } else if (taskId === 2) {
-        url = "https://vt.tiktok.com/ZSAtjg5aW/";
+        url = "https://youtube.com/@khngscript?si=Bgcr7KgaqpP-JHX5";
       }
       window.open(url, "_blank");
 
@@ -115,4 +115,4 @@
     }
   </script>
 </body>
-</html> 
+</html>
