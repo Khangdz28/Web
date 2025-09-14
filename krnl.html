@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Script Unlocked</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #fff;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    .card {
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 20px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 25px rgba(0,0,0,0.5);
+      animation: fadeIn 0.7s ease-in-out;
+      margin-bottom: 25px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      color: #38bdf8;
+      margin-bottom: 20px;
+    }
+    .script-box {
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 12px;
+      font-family: monospace;
+      font-size: 15px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    button {
+      padding: 12px 25px;
+      background: #0ea5e9;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0284c7;
+    }
+    .guide {
+      text-align: left;
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
+    }
+    .guide strong {
+      color: #fbbf24;
+    }
+    ul {
+      padding-left: 20px;
+      margin: 10px 0;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🎉 Script của bạn đã được mở khóa!</h2>
+    <div class="script-box" id="scriptText">
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Khangdz28/Base/refs/heads/main/Khng.script"))()
+    </div>
+    <button id="copyBtn" onclick="copyScript()">📋 Copy Script</button>
+  </div>
+
+  <div class="card">
+    <h2>📖 Hướng dẫn sử dụng</h2>
+    <div class="guide">
+      <p>✅ Sử dụng bất cứ executor nào bạn muốn.</p>
+      <p>✅ Bật lên và sử dụng như bình thường.</p>
+    </div>
+  </div>
+
+  <div class="footer">© 2025 Khng.script</div>
+
+  <script>
+    function copyScript() {
+      const script = document.getElementById("scriptText").textContent.trim();
+      const copyBtn = document.getElementById("copyBtn");
+
+      navigator.clipboard.writeText(script).then(() => {
+        copyBtn.innerText = "✅ Copy thành công";
+        copyBtn.style.backgroundColor = "#16a34a"; // xanh đậm khi thành công
+        setTimeout(() => {
+          copyBtn.innerText = "📋 Copy Script";
+          copyBtn.style.backgroundColor = "#0ea5e9"; // về màu gốc
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
