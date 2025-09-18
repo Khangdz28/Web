@@ -59,7 +59,8 @@
 
     <button class="btn-follow" onclick="openTask(1, this)">📌 Follow TikTok</button>
     <button class="btn-like" onclick="openTask(2, this)">Follow Acc Phụ</button>
-    <button class="btn-watch" onclick="openTask(3, this)">Đăng Kí Youtube</button>
+     <button class="btn-watch" onclick="openTask(3, this)">Follow TikTok</button>
+    <button class="btn-watch" onclick="openTask(4, this)">Đăng Kí Youtube</button>
     <button class="btn-unlock" id="unlockBtn" onclick="unlockScript()">✅ Unlock Script</button>
 
     <div class="progress-container">
@@ -69,15 +70,17 @@
 
   <script>
     let tasksCompleted = 0;
-    const totalTasks = 3;
+    const totalTasks = 4;
 
     function openTask(taskId, btn) {
       let url = "";
       if (taskId === 1) {
         url = "https://www.tiktok.com/@khng.script?_t=ZS-8zPxoCexzvU&_r=1";
       } else if (taskId === 2) {
-        url = "https://www.tiktok.com/@nam.hahgaj?_t=ZS-8znkOwkUK4Q&_r=1";
+        url = "https://www.tiktok.com/@hdatscript?_t=ZS-8ziYjkXC9qc&_r=1";
       } else if (taskId === 3) {
+        url = "https://www.tiktok.com/@hdatscript?_t=ZS-8znyhfuiA4d&_r=1";
+      } else if (taskId === 4) {
         url = "https://youtube.com/@khngscript?si=XKMUBIGQPf7hXdYT";
       }
       window.open(url, "_blank");
@@ -87,7 +90,7 @@
 
       setTimeout(() => {
         completeTask(taskId, btn);
-      }, 1000);
+      }, 3000);
     }
 
     function completeTask(taskId, btn) {
@@ -115,4 +118,3 @@
   </script>
 </body>
 </html>
-
