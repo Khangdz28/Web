@@ -19,6 +19,7 @@
       max-width: 400px;
       margin: auto;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      position: relative;
     }
     h2 { color: #38bdf8; }
     button {
@@ -34,7 +35,12 @@
     .btn-follow { background: #3b82f6; color: white; }
     .btn-like { background: #ec4899; color: white; }
     .btn-watch { background: #f59e0b; color: white; }
+    .btn-ytlike { background: #ef4444; color: white; } /* Like video YouTube */
     .btn-unlock { background: #22c55e; color: white; display: none; }
+    .done {
+      background: #22c55e !important;
+      color: white;
+    }
     .progress-container {
       background: #334155;
       border-radius: 10px;
@@ -42,6 +48,7 @@
       height: 20px;
       width: 100%;
       overflow: hidden;
+      position: relative;
     }
     .progress-bar {
       height: 100%;
@@ -49,6 +56,14 @@
       background: #38bdf8;
       border-radius: 10px;
       transition: width 0.5s ease-in-out;
+    }
+    #progressText {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      font-size: 14px;
+      top: 0;
+      left: 0;
     }
   </style>
 </head>
@@ -59,18 +74,21 @@
 
     <button class="btn-follow" onclick="openTask(1, this)">📌 Follow TikTok</button>
     <button class="btn-like" onclick="openTask(2, this)">Follow Acc Phụ</button>
-     <button class="btn-watch" onclick="openTask(3, this)">Follow TikTok</button>
+    <button class="btn-watch" onclick="openTask(3, this)">Follow TikTok</button>
     <button class="btn-watch" onclick="openTask(4, this)">Đăng Kí Youtube</button>
+    <button class="btn-ytlike" onclick="openTask(5, this)">👍 Like video YouTube</button>
+
     <button class="btn-unlock" id="unlockBtn" onclick="unlockScript()">✅ Unlock Script</button>
 
     <div class="progress-container">
       <div class="progress-bar" id="progressBar"></div>
+      <span id="progressText">0%</span>
     </div>
   </div>
 
   <script>
     let tasksCompleted = 0;
-    const totalTasks = 4;
+    const totalTasks = 5;
 
     function openTask(taskId, btn) {
       let url = "";
@@ -79,9 +97,11 @@
       } else if (taskId === 2) {
         url = "https://www.tiktok.com/@hdatscript?_t=ZS-8ziYjkXC9qc&_r=1";
       } else if (taskId === 3) {
-        url = "https://www.tiktok.com/@hdatscript?_t=ZS-8znyhfuiA4d&_r=1";
+        url = "https://www.tiktok.com/@nam.hahgaj?_t=ZS-8zzenjfOmFs&_r=1";
       } else if (taskId === 4) {
         url = "https://youtube.com/@khngscript?si=XKMUBIGQPf7hXdYT";
+      } else if (taskId === 5) {
+        url = "https://youtu.be/6VllNGNhFdY?si=-NYgMwpi9wwYYbtg";
       }
       window.open(url, "_blank");
 
@@ -104,8 +124,11 @@
 
     function updateProgress() {
       const bar = document.getElementById("progressBar");
-      let percent = (tasksCompleted / totalTasks) * 100;
+      const text = document.getElementById("progressText");
+      let percent = Math.round((tasksCompleted / totalTasks) * 100);
+
       bar.style.width = percent + "%";
+      text.innerText = percent + "%";
 
       if (tasksCompleted === totalTasks) {
         document.getElementById("unlockBtn").style.display = "block";
