@@ -1,148 +1,423 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Unlock Script</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #fff;
-      text-align: center;
-      padding: 30px;
-    }
-    .card {
-      background: #1e293b;
-      border-radius: 15px;
-      padding: 20px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
-      position: relative;
-    }
-    h2 { color: #38bdf8; }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .btn-follow { background: #3b82f6; color: white; }
-    .btn-like { background: #ec4899; color: white; }
-    .btn-watch { background: #f59e0b; color: white; }
-    .btn-ytlike { background: #ef4444; color: white; } /* Like video YouTube */
-    .btn-unlock { background: #22c55e; color: white; display: none; }
-    .done {
-      background: #22c55e !important;
-      color: white;
-    }
-    .progress-container {
-      background: #334155;
-      border-radius: 10px;
-      margin-top: 20px;
-      height: 20px;
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #38bdf8;
-      border-radius: 10px;
-      transition: width 0.5s ease-in-out;
-    }
-    #progressText {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      font-size: 14px;
-      top: 0;
-      left: 0;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete Tasks to Unlock</title>
+<style>
+  :root{
+    --bg1:#0f0c29;
+    --bg2:#302b63;
+    --bg3:#24243e;
+    --accent:#7c3aed;
+    --accent2:#06b6d4;
+    --green:#22c55e;
+    --gray:#3f3f55;
+    --card:#1a1730;
+    --text:#e8e6ff;
+    --textdim:#9c97c2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    min-height:100vh;
+    font-family:'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+    background-size:400% 400%;
+    animation: bgmove 18s ease infinite;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  @keyframes bgmove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
+  .wrap{
+    width:100%;
+    max-width:480px;
+  }
+  .header{
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .header h1{
+    font-size:22px;
+    font-weight:800;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    margin-bottom:6px;
+  }
+  .header p{
+    color:var(--textdim);
+    font-size:13px;
+  }
+  .progress-track{
+    display:flex;
+    gap:6px;
+    margin:18px 0 24px;
+  }
+  .progress-seg{
+    flex:1;
+    height:6px;
+    border-radius:6px;
+    background:var(--gray);
+    overflow:hidden;
+    position:relative;
+  }
+  .progress-seg.done{ background:var(--green); }
+  .progress-seg.active::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    animation: fillbar 6s linear forwards;
+  }
+  @keyframes fillbar{ from{width:0%} to{width:100%} }
+
+  .card{
+    background:var(--card);
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:18px;
+    padding:22px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.45);
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:'';
+    position:absolute; top:-40%; right:-40%;
+    width:220px; height:220px;
+    background:radial-gradient(circle, rgba(124,58,237,0.35), transparent 70%);
+    pointer-events:none;
+  }
+
+  .step{ display:none; animation: fadein .35s ease; }
+  .step.active{ display:block; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)} }
+
+  .step-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5px;
+    color:var(--accent2);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .step-badge .num{
+    width:22px;height:22px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:12px;
+  }
+
+  .step h2{ font-size:18px; margin-bottom:6px; }
+  .step .desc{ color:var(--textdim); font-size:13.5px; margin-bottom:18px; line-height:1.5; }
+
+  .target-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.07);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-bottom:16px;
+  }
+  .target-box .avatar{
+    width:42px;height:42px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800; font-size:15px; color:#fff;
+    flex-shrink:0;
+  }
+  .target-box .info{ flex:1; min-width:0; }
+  .target-box .info .name{ font-weight:700; font-size:14px; }
+  .target-box .info .sub{ color:var(--textdim); font-size:12px; }
+
+  .action-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    font-size:14.5px;
+    font-weight:700;
+    cursor:pointer;
+    color:#fff;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    transition:transform .15s, opacity .15s;
+    margin-bottom:14px;
+  }
+  .action-btn:hover{ transform:translateY(-1px); opacity:.92; }
+  .action-btn:active{ transform:translateY(0); }
+  .action-btn.secondary{
+    background:rgba(255,255,255,0.06);
+    color:var(--text);
+    border:1px solid rgba(255,255,255,0.1);
+  }
+
+  .timer-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:14px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.03);
+    margin-top:4px;
+  }
+  .timer-ring{
+    width:30px; height:30px;
+    border-radius:50%;
+    border:3px solid var(--gray);
+    border-top-color:var(--accent2);
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .timer-text{ font-size:13px; color:var(--textdim); }
+
+  .next-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:800;
+    color:#fff;
+    cursor:not-allowed;
+    background:var(--gray);
+    transition:.25s;
+    margin-top:12px;
+  }
+  .next-btn.unlocked{
+    cursor:pointer;
+    background:linear-gradient(135deg,var(--green),#16a34a);
+    box-shadow:0 8px 24px rgba(34,197,94,0.35);
+  }
+  .next-btn.unlocked:hover{ transform:translateY(-1px); }
+
+  .done-screen{ text-align:center; }
+  .done-icon{
+    width:74px;height:74px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--green),#16a34a);
+    display:flex; align-items:center; justify-content:center;
+    font-size:34px;
+  }
+  .done-screen h2{ font-size:20px; margin-bottom:8px; }
+  .done-screen p{ color:var(--textdim); font-size:13.5px; margin-bottom:20px; line-height:1.5; }
+
+  .footer-note{
+    text-align:center;
+    color:var(--textdim);
+    font-size:11.5px;
+    margin-top:16px;
+    opacity:.7;
+  }
+
+  .check-mark{
+    display:none;
+    color:var(--green);
+    font-size:13px;
+    margin-bottom:14px;
+    align-items:center;
+    gap:6px;
+  }
+  .check-mark.show{ display:flex; }
+</style>
 </head>
 <body>
-  <div class="card">
-    <h2>🔑 Unlock Script</h2>
-    <p>Hoàn thành nhiệm vụ để mở khóa script</p>
 
-    <button class="btn-follow" onclick="openTask(1, this)">📌 Follow TikTok</button>
-    <button class="btn-like" onclick="openTask(2, this)">Follow Acc Phụ</button>
-    <button class="btn-watch" onclick="openTask(3, this)">Like video</button>
-    <button class="btn-watch" onclick="openTask(4, this)">Đăng Kí Youtube</button>
-    <button class="btn-ytlike" onclick="openTask(5, this)">Like video</button>
-
-    <button class="btn-unlock" id="unlockBtn" onclick="unlockScript()">✅ Unlock Script</button>
-
-    <div class="progress-container">
-      <div class="progress-bar" id="progressBar"></div>
-      <span id="progressText">0%</span>
-    </div>
+<div class="wrap">
+  <div class="header">
+    <h1>🔓 Complete Tasks to Unlock</h1>
+    <p>Finish all <b>3 steps</b> below — each step needs a 6s wait to confirm</p>
   </div>
 
-  <script>
-    let tasksCompleted = 0;
-    const totalTasks = 5;
+  <div class="progress-track" id="progressTrack"></div>
 
-    function openTask(taskId, btn) {
-      let url = "";
-      if (taskId === 1) {
-        url = "https://www.tiktok.com/@khngscript?_t=ZS-90G7cXf2Px4&_r=1";
-      } else if (taskId === 2) {
-        url = "https://www.tiktok.com/@mozillontop?_t=ZS-90LrcV6OhAm&_r=1";
-      } else if (taskId === 3) {
-        url = "https://www.tiktok.com/@khngscript/video/7565131359728012562?_r=1&u_code=e38gl40ldaek53&region=VN&mid=7531687232491621121&preview_pb=0&sharer_language=en&_d=emc693f296mk47&share_item_id=7565131359728012562&source=h5_t&timestamp=1769316317&user_id=7130576383294571546&sec_user_id=MS4wLjABAAAAWTLqAUpy64HEArJWo5DCmMH6xsIQ26Gv-aiyRyvyoI0vTgUg0cMFd2NR9J2gsqUK&item_author_type=2&social_share_type=0&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7598879257646106375&share_link_id=3e07ec3c-4e42-42e1-b06c-149b1c749bcd&share_app_id=1180&ugbiz_name=MAIN&ug_btm=b2878%2Cb2878&link_reflow_popup_iteration_sharer=%7B%22click_empty_to_play%22%3A1%2C%22dynamic_cover%22%3A1%2C%22follow_to_play_duration%22%3A-1.0%2C%22profile_clickable%22%3A1%7D&enable_checksum=1";
-      } else if (taskId === 4) {
-        url = "https://youtube.com/@khngscript?si=XKMUBIGQPf7hXdYT";
-      } else if (taskId === 5) {
-        url = "https://youtu.be/h8UVSI7QwGI?si=3w4anDaZx0jt0zBo";
-      }
+  <div class="card">
 
-      // Mở liên kết trong tab mới, an toàn hơn
-      window.open(url, "_blank", "noopener,noreferrer");
+    <!-- STEP 1: Follow main account -->
+    <div class="step active" data-step="1">
+      <div class="step-badge"><span class="num">1</span> FOLLOW MAIN ACCOUNT</div>
+      <h2>Follow to unlock the next step</h2>
+      <p class="desc">Click the button to open the page, follow the main account, then come back here.</p>
 
-      btn.disabled = true;
-      btn.textContent = "⏳ Đang xử lý...";
+      <div class="target-box">
+        <div class="avatar">K</div>
+        <div class="info">
+          <div class="name">@khngscript</div>
+          <div class="sub">Main account</div>
+        </div>
+      </div>
 
-      setTimeout(() => {
-        completeTask(taskId, btn);
-      }, 3000);
-    }
+      <button class="action-btn" onclick="openTaskLink(this,'https://www.tiktok.com/@khngscript')">
+        🔗 Open page & Follow
+      </button>
 
-    function completeTask(taskId, btn) {
-      if (!btn.classList.contains("done")) {
-        btn.classList.add("done");
-        btn.textContent = "✔ Hoàn thành";
-        tasksCompleted++;
-        updateProgress();
-      }
-    }
+      <div class="check-mark" id="check-1">✅ Link opened</div>
 
-    function updateProgress() {
-      const bar = document.getElementById("progressBar");
-      const text = document.getElementById("progressText");
-      let percent = Math.round((tasksCompleted / totalTasks) * 100);
+      <div class="timer-wrap" id="timerWrap-1" style="display:none">
+        <div class="timer-ring"></div>
+        <div class="timer-text">Confirming...</div>
+      </div>
 
-      bar.style.width = percent + "%";
-      text.textContent = percent + "%";
+      <button class="next-btn" id="nextBtn-1" onclick="goNext(1)">Next →</button>
+    </div>
 
-      if (tasksCompleted === totalTasks) {
-        document.getElementById("unlockBtn").style.display = "block";
-      }
-    }
+    <!-- STEP 2: Like video -->
+    <div class="step" data-step="2">
+      <div class="step-badge"><span class="num">2</span> LIKE THE VIDEO</div>
+      <h2>Like the video</h2>
+      <p class="desc">Open the video, hit ♥ Like, then come back here to continue.</p>
 
-    function unlockScript() {
-      window.location.href = "choose.html";
-    }
-  </script>
+      <div class="target-box">
+        <div class="avatar">▶</div>
+        <div class="info">
+          <div class="name">Latest video</div>
+          <div class="sub">Required: Like the video</div>
+        </div>
+      </div>
+
+      <button class="action-btn" onclick="openTaskLink(this,'https://vt.tiktok.com/ZSCYQKTXN/')">
+        ❤️ Open video & Like
+      </button>
+
+      <div class="check-mark" id="check-2">✅ Link opened</div>
+
+      <div class="timer-wrap" id="timerWrap-2" style="display:none">
+        <div class="timer-ring"></div>
+        <div class="timer-text">Confirming...</div>
+      </div>
+
+      <button class="next-btn" id="nextBtn-2" onclick="goNext(2)">Next →</button>
+    </div>
+
+    <!-- STEP 3: Follow this account -->
+    <div class="step" data-step="3">
+      <div class="step-badge"><span class="num">3</span> FOLLOW THIS ACCOUNT</div>
+      <h2>Follow the secondary account</h2>
+      <p class="desc">Last step — follow the this account, then come back to get your link.</p>
+
+      <div class="target-box">
+        <div class="avatar">K2</div>
+        <div class="info">
+          <div class="name">@hafascript</div>
+          <div class="sub">Secondary account</div>
+        </div>
+      </div>
+
+      <button class="action-btn" onclick="openTaskLink(this,'https://www.tiktok.com/@hafascript?_r=1&_t=ZS-97VEAiFf09y')">
+        🔗 Open page & Follow
+      </button>
+
+      <div class="check-mark" id="check-3">✅ Link opened</div>
+
+      <div class="timer-wrap" id="timerWrap-3" style="display:none">
+        <div class="timer-ring"></div>
+        <div class="timer-text">Confirming...</div>
+      </div>
+
+      <button class="next-btn" id="nextBtn-3" onclick="goNext(3)">Get link →</button>
+    </div>
+
+    <!-- DONE SCREEN -->
+    <div class="step" data-step="done">
+      <div class="done-screen">
+        <div class="done-icon">🎉</div>
+        <h2>All tasks completed!</h2>
+        <p>Thanks for following & supporting. Here is your link / content:</p>
+        <button class="action-btn" onclick="window.open('https://khangdz28.github.io/Mainn/','_blank')">
+          🚀 Open link / content
+        </button>
+        <button class="action-btn secondary" onclick="location.reload()">↺ Restart</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">Khngscript</div>
+</div>
+
+<script>
+const TOTAL_STEPS = 3;
+const WAIT_SECONDS = 6;
+
+const track = document.getElementById('progressTrack');
+for(let i=1;i<=TOTAL_STEPS;i++){
+  const seg = document.createElement('div');
+  seg.className='progress-seg';
+  seg.id='seg-'+i;
+  track.appendChild(seg);
+}
+function refreshProgress(current){
+  for(let i=1;i<=TOTAL_STEPS;i++){
+    const seg = document.getElementById('seg-'+i);
+    seg.classList.remove('active','done');
+    if(i < current) seg.classList.add('done');
+    else if(i === current) seg.classList.add('active');
+  }
+}
+refreshProgress(1);
+
+let timers = {};
+
+function openTaskLink(btn, url){
+  const stepEl = btn.closest('.step');
+  const stepNum = stepEl.getAttribute('data-step');
+
+  window.open(url, '_blank');
+
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
+
+  document.getElementById('check-'+stepNum).classList.add('show');
+
+  const timerWrap = document.getElementById('timerWrap-'+stepNum);
+  timerWrap.style.display = 'flex';
+
+  clearTimeout(timers[stepNum]);
+  timers[stepNum] = setTimeout(()=>{
+    timerWrap.style.display = 'none';
+    const nextBtn = document.getElementById('nextBtn-'+stepNum);
+    nextBtn.classList.add('unlocked');
+    nextBtn.style.cursor = 'pointer';
+  }, WAIT_SECONDS*1000);
+}
+
+function goNext(stepNum){
+  const nextBtn = document.getElementById('nextBtn-'+stepNum);
+  if(!nextBtn.classList.contains('unlocked')) return;
+
+  const currentStepEl = document.querySelector('.step[data-step="'+stepNum+'"]');
+  currentStepEl.classList.remove('active');
+
+  const nextStepNum = stepNum+1;
+  const nextStepKey = nextStepNum > TOTAL_STEPS ? 'done' : nextStepNum;
+  const nextStepEl = document.querySelector('.step[data-step="'+nextStepKey+'"]');
+  nextStepEl.classList.add('active');
+
+  if(nextStepKey !== 'done'){
+    refreshProgress(nextStepNum);
+  } else {
+    refreshProgress(TOTAL_STEPS+1);
+  }
+}
+</script>
+
 </body>
 </html>
-
-
-
